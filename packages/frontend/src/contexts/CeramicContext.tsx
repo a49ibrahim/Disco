@@ -18,7 +18,7 @@ export interface CeramicContextInterface {
   isConnected: boolean;
   isLoadingUserData: boolean;
   ethAddress?: string;
-  userDid?: string;
+  userDid: string;
   userData: UserData;
   ensureConnected(): Promise<void>;
   updateUserData(updates: Partial<UserData>): Promise<void>;
@@ -29,7 +29,8 @@ export interface CeramicContextInterface {
 export const defaultCeramicContext: CeramicContextInterface = {
   isConnected: false,
   isLoadingUserData: true,
-  userData: {},
+  userData: {did: ""},
+  userDid: "",
   ensureConnected: async () => {
     console.log("default stub ensureConnected called");
   },
@@ -38,7 +39,7 @@ export const defaultCeramicContext: CeramicContextInterface = {
   },
   getUserData: async (did: string) => {
     console.log("default stub getUserData called for", did);
-    return {};
+    return {did: ""};
   },
   createDocument: async (content: any, metadata: any) => {
     console.log("default stub createDocument called", { content, metadata });
@@ -54,7 +55,7 @@ export const CeramicProvider: React.FC = (props) => {
   const [isLoadingUserData, setIsLoadingUserData] = React.useState(true);
   const [ethAddress, setEthAddress] = React.useState("");
   const [userDid, setUserDid] = React.useState("");
-  const [userData, setUserData] = React.useState<UserData>({});
+  const [userData, setUserData] = React.useState<UserData>({did: ""});
 
   const ceramic = React.useMemo(() => new CeramicClient(API_URL), []);
 
@@ -94,7 +95,7 @@ export const CeramicProvider: React.FC = (props) => {
         ...DEFAULT_TILE_METADATA,
       })) as any;
       console.log("[CeramicContext] Loaded current user data for DID", ceramic.did.id, userDataDoc.content);
-      setUserData(userDataDoc.content || {});
+      setUserData({...userDataDoc.content, did: ceramic.did.id } || {});
       setIsLoadingUserData(false);
     };
   }, [ceramic, isConnected]);

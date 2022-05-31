@@ -4,16 +4,19 @@ import { CeramicContext } from "../../contexts/";
 import { Box, Button, FormControl, TextField, Typography, CircularProgress } from "@mui/material";
 import { DidView } from "../DidView";
 
-export interface ProfileEditProps {
-  onSaveComplete?(): void;
-}
+// export interface ProfileEditProps {
+//   onSaveComplete?(): void;
+// }
+import { ApiService } from "../../utils/ApiService";
 
-export const ProfileEdit: React.FC<ProfileEditProps> = (props) => {
+export const ProfileEdit: React.FC = () => {
   const { ensureConnected, userDid, userData, updateUserData, isConnected, isLoadingUserData } =
     React.useContext(CeramicContext);
   ensureConnected();
   const [loading, setLoading] = React.useState(false);
   const [profile, setProfile] = React.useState<Profile>({});
+
+  const api = React.useMemo(() => new ApiService(), []);
 
   React.useEffect(() => {
     setProfile(userData.profile || {});
@@ -21,9 +24,9 @@ export const ProfileEdit: React.FC<ProfileEditProps> = (props) => {
 
   async function saveProfile() {
     setLoading(true);
+    await api.registerDid(userDid);
     await updateUserData({ profile });
     setLoading(false);
-    props.onSaveComplete && props.onSaveComplete();
     console.log("[ProfileEdit] Successfully updated user data for DID", userDid);
   }
 

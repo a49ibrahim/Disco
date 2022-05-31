@@ -1,5 +1,14 @@
 # Disco Full-Stack Take-Home Exercise
 
+## What Would I change If I had more Time
+    ## I list these in bullet points but can go into more depth over a call
+
+1. I would add more error handling. I would add error handling based on weather the DID saved or not and error handling for loading profiles
+2. I would try to have more separation of corncerns in the comnponents themselves and between the back end and the Front end. I deally I would
+want the back end to act like and api and send the expected data to the frontend components but they are currently closely coupled for my liking.
+3. I know design is not part of this but I feel like the User experience on the front end is lacking and should be more explict and intentional in the 
+language and perhaps add more pop up boxes and heading/tags to make it more clear what the Use is doing
+4. These are each huge groups that I could dive into long conversations about
 ## Introduction
 
 This exercise will be to implement APIs that help aggregate profile data saved to Ceramic (a decentralized storage network), integrate these APIs into frontend components, and consider the architectural implications of your solution.

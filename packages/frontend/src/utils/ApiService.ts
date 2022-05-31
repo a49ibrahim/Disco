@@ -1,4 +1,6 @@
 import { Profile } from "../types";
+import { UserData } from "../types";
+
 
 export enum ApiPath {
   REGISTER_DID = "/v1/did/register/",
@@ -13,7 +15,7 @@ export class ApiService {
 
   constructor() {}
 
-  public async registerDid(did: string): Promise<boolean> {
+  public async registerDid(did?: string): Promise<boolean> {
     return this.request(this.api.REGISTER_DID + did, "POST");
   }
 
@@ -25,7 +27,7 @@ export class ApiService {
     return this.request(this.api.GET_ALL_DIDS);
   }
 
-  public async getAllProfiles(): Promise<Profile[]> {
+  public async getAllProfiles(): Promise<UserData[]> {
     return this.request(this.api.GET_ALL_PROFILES);
   }
 

@@ -20,4 +20,5 @@ export interface UserData {
   linkages?: {
     twitter?: AccountLinkage;
   };
+  did?: string;
 }

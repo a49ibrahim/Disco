@@ -4,7 +4,9 @@ import { PathParams } from "@tsed/common";
 import { DidService } from "../services/DidService";
 import { Did } from "../entity/Did";
 import { Profile } from "../types";
+import { UserData } from "../types";
 import { getProfileFromCeramic } from "../common/ceramic-util";
+import { setDefaultResultOrder } from "dns/promises";
 
 @Controller("/did")
 export class GetProfileController {
@@ -25,8 +27,7 @@ export class GetProfileController {
   async registerDid(@PathParams("did") did: string): Promise<boolean> {
     console.log("@TODO: Implement me using this.DidService");
     const result = this.DidService.registerDid(did);
-
-    return true;
+    return result;
   }
 
   @Get("/getProfileViaDid/:did")
@@ -39,14 +40,22 @@ export class GetProfileController {
 
   @Get("/getAllProfiles")
   @Summary("Retrive the profiles of all Disco users")
-  async getAllProfiles(): Promise<Profile[]> {
-    const result = this.DidService.getAllDids();
+  async getAllProfiles(): Promise<UserData[]> {
+    const result = await this.DidService.getAllDids();
+
+    let userProfiles = [];
 
     console.log("@TODO: Using stub implementation with hard-coded profile fetch. Implement me!");
 
-    const profile = await getProfileFromCeramic("did:3:kjzl6cwe1jw148uyox3goiyrwwe3aab8vatm3apxqisd351ww0dj6v5e3f61e8b");
-
-    return [profile!];
+    for (const i of result) {
+      const profile = await getProfileFromCeramic(i.did);
+      const userData: UserData = {
+        profile,
+        did: i.did,
+      };
+      userProfiles.push(userData);
+    }
+    return userProfiles;
   }
 
 }

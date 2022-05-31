@@ -5,7 +5,16 @@ import PersonIcon from "@mui/icons-material/Person";
 import { discoLinearGradientDark } from "../../themes";
 import { DidView, DiscoButton } from "../";
 
-export const ProfileView: React.FC<{ did: string, profile: Profile }> = ({ did, profile }) => {
+function ProfileError({ did }: { did: string }): React.ReactElement {
+  return <div>Error loading profile for: {did}</div>
+}
+
+export const ProfileView: React.FC<{ did: string, profile?: Profile }> = ({ did, profile }) => {
+
+  if (!profile) {
+    return <ProfileError did={did}/>
+   }
+
   return (
     <>
       <Box
